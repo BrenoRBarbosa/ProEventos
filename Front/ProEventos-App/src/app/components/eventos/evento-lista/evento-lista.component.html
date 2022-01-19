@@ -48,12 +48,12 @@
         <td>{{evento.id}}</td>
         <td>{{evento.tema}}</td>
         <td class="d-none d-md-table-cell">{{evento.local}}</td>
-        <td>{{evento.dataEvento | DateTimeFormat}}</td>
+        <td>{{evento.dataEvento}}</td>
         <td class="d-none d-md-table-cell">{{evento.qtdPessoas}}</td>
-        <td class="d-none d-md-table-cell">{{evento.lote | uppercase}}</td>
+        <td class="d-none d-md-table-cell">{{evento.lotes[0]?.nome | uppercase}}</td>
         <td>
 
-          <button type="button" class="btn btn-danger btn-lg ml-2" style="margin-left: 2px;" tooltip="Excluir" (click)="openModal(template)">
+          <button type="button" class="btn btn-danger btn-lg ml-2" style="margin-left: 2px;" tooltip="Excluir" (click)="openModal($event, template, evento.id)">
             <i class="fa fa-trash"></i>
           </button>
         </td>
@@ -72,7 +72,7 @@
 
 <ng-template #template>
   <div class="modal-body text-center">
-    <p>Tem certeza que deseja deletar esse Evento??</p>
+    <p>Tem certeza que deseja deletar esse Evento de Código {{this.eventoId}}??</p>
     <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
     <button type="button" class="btn btn-primary" (click)="decline()" >Nâo</button>
   </div>

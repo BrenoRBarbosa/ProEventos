@@ -18,6 +18,11 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+
+
 import { EventoService } from './services/evento.service';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { ContatosComponent } from './components/contatos/contatos.component';
@@ -32,6 +37,7 @@ import { RegistrationComponent } from './components/user/registration/registrati
 
 
 
+defineLocale('pt-br', ptBrLocale);
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +53,9 @@ import { RegistrationComponent } from './components/user/registration/registrati
       EventoListaComponent,
       UserComponent,
       LoginComponent,
-      RegistrationComponent
+      RegistrationComponent,
+
+
    ],
   imports: [
     BrowserModule,
@@ -56,6 +64,7 @@ import { RegistrationComponent } from './components/user/registration/registrati
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -70,6 +79,8 @@ import { RegistrationComponent } from './components/user/registration/registrati
 
   ],
   providers: [
+
+    
     EventoService
   ],
   bootstrap: [AppComponent]

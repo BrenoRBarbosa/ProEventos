@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -16,6 +17,7 @@ export class EventoListaComponent implements OnInit {
   modalRef?: BsModalRef;
   public eventos: Evento[] = [];
   public eventosFiltrados: any = [];
+  public eventoId = 0;
 
   larguraImagem = 120;
   margemImagem = 2;
@@ -44,43 +46,65 @@ export class EventoListaComponent implements OnInit {
     private router: Router
     ) { }
 
-  public ngOnInit(): void {
-    this.spinner.show();
-    this.getEventos();
-  }
+    public ngOnInit(): void {
+      this.spinner.show();
+      this.carregarEventos();
+    }
 
-  public alterarImagem(): void{
-    this.exibirImagem = !this.exibirImagem;
-  }
+    public alterarImagem(): void{
+      this.exibirImagem = !this.exibirImagem;
+    }
 
-  public getEventos(): void {
-    this.eventoService.getEventos().subscribe({
-      next: (eventos: Evento[]) =>{
-        this.eventos = eventos;
-        this.eventosFiltrados = this.eventos;
-      },
-      error: (error: any) => {
-        this.spinner.hide();
-        this.toastr.error('Erro ao Carregar os Eventos!', 'Error');
-      },
-      complete: () => this.spinner.hide()
-    });
-  }
+    public carregarEventos(): void {
+      this.eventoService.getEventos().subscribe({
+        next: (eventos: Evento[]) =>{
+          this.eventos = eventos;
+          this.eventosFiltrados = this.eventos;
+        },
+        error: (error: any) => {
+          this.spinner.hide();
+          this.toastr.error('Erro ao Carregar os Eventos!', 'Error');
+        },
+        complete: () => this.spinner.hide()
+      });
+    }
 
-  openModal(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
-  }
+    openModal(event: any, template: TemplateRef<any>, eventoId: number): void {
+      event.stopPropagation();
+      this.eventoId = eventoId;
+      this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+    }
 
-  confirm(): void {
-    this.modalRef?.hide();
-    this.toastr.success('O Evento Foi Deletado com Sucesso!', 'Deletado!');
-  }
+    confirm(): void {
+      this.modalRef?.hide();
+      this.spinner.show();
 
-  decline(): void {
-    this.modalRef?.hide();
-  }
+      this.eventoService.deleteEvento(this.eventoId).subscribe(
+        (result: any) => {
+          console.error(result)
+          this.toastr.success('O Evento Foi Deletado com Sucesso!', 'Deletado!');
 
-  detralhaeEvento(id: number): void{
-    this.router.navigate([`eventos/detalhe/${id}`]);
-  }
-}
+          this.carregarEventos();
+
+        },
+        (error: any) => {
+          console.error(error);
+          this.toastr.error(`Erro ao tentar deletar o vento ${this.eventoId}`, 'Erro!');
+         
+        },
+
+        ).add(() => this.spinner.hide());
+
+
+      }
+
+      decline(): void {
+        this.modalRef?.hide();
+      }
+
+      detralhaeEvento(id: number): void{
+        this.router.navigate([`eventos/detalhe/${id}`]);
+      }
+
+
+    }
