@@ -24,6 +24,8 @@ import { ptBrLocale } from 'ngx-bootstrap/locale';
 
 
 import { EventoService } from './services/evento.service';
+import { LoteService } from './services/lote.service';
+
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { ContatosComponent } from './components/contatos/contatos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -34,6 +36,7 @@ import { EventoListaComponent } from './components/eventos/evento-lista/evento-l
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
+
 
 
 
@@ -79,9 +82,8 @@ defineLocale('pt-br', ptBrLocale);
 
   ],
   providers: [
-
-    
-    EventoService
+    EventoService,
+    LoteService,
   ],
   bootstrap: [AppComponent]
 })

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from '../models/Evento';
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Injectable( //{providedIn: 'root'}
 )
