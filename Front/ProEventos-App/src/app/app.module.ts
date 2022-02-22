@@ -14,6 +14,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -57,8 +58,6 @@ defineLocale('pt-br', ptBrLocale);
       UserComponent,
       LoginComponent,
       RegistrationComponent,
-
-
    ],
   imports: [
     BrowserModule,
@@ -79,6 +78,7 @@ defineLocale('pt-br', ptBrLocale);
       progressBar: true,
     }),
     NgxSpinnerModule,
+    NgxCurrencyModule,
 
   ],
   providers: [

@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -102,7 +101,7 @@ export class EventoListaComponent implements OnInit {
         this.modalRef?.hide();
       }
 
-      detralhaeEvento(id: number): void{
+      detralharEvento(id: number): void{
         this.router.navigate([`eventos/detalhe/${id}`]);
       }
 
