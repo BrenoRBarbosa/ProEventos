@@ -14,6 +14,8 @@ import { LoteService } from '@app/services/lote.service';
 import { add } from 'ngx-bootstrap/chronos';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DateTimeFormatPipe } from '@app/helpers/DateTimeFormat.pipe';
+import { environment } from 'src/environments/environment';
+
 
 
 @Component({
@@ -29,6 +31,8 @@ export class EventoDetalhesComponent implements OnInit {
   form!: FormGroup;
   estadoSalvar = 'post';
   loteAtual = {id: 0, nome: '', indice: 0};
+  imagemURL = 'assets/img/upload.png';
+  file: File;
   
   
   get modoEditar(): boolean{
@@ -80,6 +84,10 @@ export class EventoDetalhesComponent implements OnInit {
           (evento: Evento) => {
             this.evento = {... evento};
             this.form.patchValue(this.evento);
+            if (this.evento.imagemURL !== '') {
+              this.imagemURL = environment.apiURL + 'resources/images/' + this.evento.imagemURL;
+
+            }
             this.carregarLotes();
           },
           (error: any) => {
@@ -116,7 +124,7 @@ export class EventoDetalhesComponent implements OnInit {
           qtdPessoas: ['',[Validators.required, Validators.max(120000)]],
           telefone: ['',Validators.required],
           email: ['',[Validators.required, Validators.email]],
-          imagemURL: ['',Validators.required],
+          imagemURL: ['',],
           lotes: this.fb.array([])
         });
       }
@@ -227,7 +235,31 @@ export class EventoDetalhesComponent implements OnInit {
             this.modalRef.hide();
           }
 
-       
+         public onFileChange(ev: any): void {
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+            this.file = ev.target.files;
+            reader.readAsDataURL(this.file[0]);
+
+            this.uploadImagem();
+         }
+
+         uploadImagem(): void {
+            this.spinner.show();
+            this.eventoService.postUpload(this.eventoId, this.file).subscribe(
+              () => {
+                this.carregarEvento();
+                this.toastr.success('Imagem atualizada com sucesso', 'Sucesso!')
+              },
+              (error: any) => {
+                this.toastr.error('Erro ao tentar fazer upload da imagem');
+                console.log(error);
+              },
+
+            ).add(() => this.spinner.hide());
+         }
           
         }
         
